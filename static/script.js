@@ -113,11 +113,14 @@ function showToast(message) {
 
 // Actions
 function login() {
+    console.log("Login triggered"); // Keep console log
     const name = dom.usernameInput.value.trim();
     if (name) {
         currentUser = name;
         localStorage.setItem('padel_username', currentUser);
         showDashboard();
+    } else {
+        alert("Please enter a name!"); // User feedback for empty input
     }
 }
 
@@ -278,7 +281,7 @@ function renderViewSpecifics(data) {
             div.style.padding = '20px';
             div.style.marginBottom = '20px';
             div.style.display = 'flex';
-            div.style.justify - content = 'space-between';
+            div.style.justifyContent = 'space-between';
             div.style.alignItems = 'center';
 
             div.innerHTML = `
