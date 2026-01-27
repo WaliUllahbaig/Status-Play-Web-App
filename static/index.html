@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StatusPlay | Pro Dashboard</title>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="static/style.css">
+    <!-- Ionicons for Premium Icons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+</head>
+
+<body>
+
+    <!-- Notification Toast -->
+    <div id="toast-container"></div>
+
+    <!-- Login View -->
+    <div id="login-view" class="login-container">
+        <div class="login-card glass-effect">
+            <h1 class="logo">StatusPlay</h1>
+            <p style="color: #a0a0a0; margin-bottom: 20px;">Premium Padel Coordination</p>
+            <input type="text" id="username-input" placeholder="Enter your name..." autocomplete="off">
+            <button id="login-btn" class="btn-primary">ENTER COURT</button>
+        </div>
+    </div>
+
+    <!-- App Container -->
+    <div id="app-view" class="dashboard-container hidden">
+
+        <!-- Sidebar -->
+        <aside class="sidebar glass-effect">
+            <div class="logo">StatusPlay</div>
+            <nav id="sidebar-nav">
+                <div class="nav-item active" data-view="dashboard">
+                    <ion-icon name="grid-outline"></ion-icon> Dashboard
+                </div>
+                <div class="nav-item" data-view="my-team">
+                    <ion-icon name="people-outline"></ion-icon> My Team
+                </div>
+                <div class="nav-item" data-view="courts">
+                    <ion-icon name="tennisball-outline"></ion-icon> Courts
+                </div>
+                <div class="nav-item" data-view="tournaments">
+                    <ion-icon name="trophy-outline"></ion-icon> Tournaments
+                </div>
+                <div class="nav-item" data-view="settings">
+                    <ion-icon name="settings-outline"></ion-icon> Settings
+                </div>
+                <div class="nav-item" id="logout-btn" style="color: #ff4444; margin-top: 50px;">
+                    <ion-icon name="log-out-outline"></ion-icon> Logout
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+
+            <!-- Global Top Bar -->
+            <header class="top-bar glass-effect">
+                <h2 id="page-title" style="font-weight: 600;">Dashboard Preview</h2>
+                <div class="user-profile">
+                    <span id="user-display-name">Player</span>
+                    <div class="avatar">🎾</div>
+                </div>
+            </header>
+
+            <!-- VIEW: DASHBOARD -->
+            <section id="view-dashboard" class="view-section">
+                <!-- Quick Stats -->
+                <div class="stats-grid">
+                    <div class="stat-card glass-effect">
+                        <span class="stat-label">Total Players</span>
+                        <span class="stat-value" id="total-players-val">--</span>
+                        <span class="stat-label" style="color: var(--primary-neon);">Active Now</span>
+                    </div>
+                    <div class="stat-card glass-effect">
+                        <span class="stat-label">Weather</span>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span class="stat-value" id="weather-temp-val" style="font-size: 1.5rem;">--</span>
+                            <ion-icon name="partly-sunny-outline" style="font-size: 1.5rem; color: #fff;"></ion-icon>
+                        </div>
+                        <span class="stat-label" id="weather-cond-val">--</span>
+                    </div>
+                    <div class="stat-card glass-effect">
+                        <span class="stat-label">Next Match</span>
+                        <span class="stat-value" id="next-match-time" style="font-size: 1.5rem;">--</span>
+                        <span class="stat-label" id="next-match-teams" style="font-size: 0.8rem;">--</span>
+                    </div>
+                    <div class="stat-card glass-effect">
+                        <span class="stat-label">Cutoff Time</span>
+                        <span class="stat-value" style="color: var(--accent-blue);">17:00</span>
+                        <span class="stat-label">Daily</span>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="charts-grid" style="margin-top: 20px;">
+                    <div class="chart-container glass-effect">
+                        <h3>Court Availability</h3>
+                        <canvas id="courtsChart"></canvas>
+                    </div>
+                    <div class="chart-container glass-effect">
+                        <h3>Team Distribution</h3>
+                        <canvas id="teamsChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Action Area -->
+                <div class="glass-effect" style="padding: 20px; text-align: center; margin-top: 20px;">
+                    <h3 style="margin-bottom: 15px;">Your Status</h3>
+                    <div style="display: flex; gap: 20px; justify-content: center;">
+                        <button id="btn-in" class="btn-primary"
+                            style="background: rgba(57, 255, 20, 0.1); border: 1px solid var(--primary-neon); color: var(--primary-neon);">I'M
+                            IN</button>
+                        <button id="btn-out" class="btn-primary"
+                            style="background: rgba(255, 100, 100, 0.1); border: 1px solid #ff4444; color: #ff4444; box-shadow: none;">I'M
+                            OUT</button>
+                    </div>
+                </div>
+
+                <!-- Lists Row -->
+                <div class="lists-grid" style="margin-top: 20px;">
+                    <div class="list-panel glass-effect">
+                        <h3 style="margin-bottom: 15px;">Man of the Match 👑</h3>
+                        <div style="text-align: center; padding: 20px;">
+                            <div class="avatar" style="width: 80px; height: 80px; margin: 0 auto; font-size: 2rem;">🏆
+                            </div>
+                            <h2 id="motm-name" style="margin: 10px 0;">--</h2>
+                            <p id="motm-points" style="color: var(--primary-neon);">0 Pts</p>
+                        </div>
+                    </div>
+
+                    <div class="list-panel glass-effect">
+                        <h3 style="margin-bottom: 15px;">Discount Offer 🏷️</h3>
+                        <div id="discount-banner"
+                            style="background: linear-gradient(45deg, var(--accent-blue), transparent); padding: 20px; border-radius: 12px; font-weight: 800; font-size: 1.2rem;">
+                            Loading Offer...
+                        </div>
+                    </div>
+
+                    <div class="list-panel glass-effect">
+                        <h3 style="margin-bottom: 15px;">Waiting List (<span id="wait-count">0</span>)</h3>
+                        <div class="list-item"><span>Rehan</span> <span style="color: orange;">Queue 1</span></div>
+                        <div class="list-item"><span>Zoya</span> <span style="color: orange;">Queue 2</span></div>
+                    </div>
+                </div>
+
+                <!-- Active Roster -->
+                <div class="list-panel glass-effect" style="margin-top: 20px;">
+                    <h3>Active Roster</h3>
+                    <div id="roster-list"></div>
+                </div>
+            </section>
+
+            <!-- VIEW: MY TEAM -->
+            <section id="view-my-team" class="view-section hidden">
+                <div class="glass-effect" style="padding: 30px;">
+                    <h2 id="team-name-big" class="title">Loading Team...</h2>
+                    <h4 style="color: var(--text-secondary); margin-bottom: 20px;">Divison A - Rank <span
+                            id="team-rank">#</span></h4>
+
+                    <div class="stats-grid">
+                        <div class="stat-card glass-effect" style="background: rgba(57, 255, 20, 0.05);">
+                            <span class="stat-label">Season Wins</span>
+                            <span class="stat-value" id="team-wins">--</span>
+                        </div>
+                        <div class="stat-card glass-effect">
+                            <span class="stat-label">Next Match</span>
+                            <span class="stat-value" style="font-size:1.2rem;" id="team-next-match">--</span>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-top: 30px; margin-bottom: 15px;">Squad Members</h3>
+                    <div id="team-roster-list" class="lists-grid">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW: COURTS -->
+            <section id="view-courts" class="view-section hidden">
+                <div class="charts-grid" style="grid-template-columns: 1fr;"> <!-- Reusing grid class for simplicity -->
+                    <div id="courts-grid-container"
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+                        <!-- JS populated courts -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEW: TOURNAMENTS -->
+            <section id="view-tournaments" class="view-section hidden">
+                <div class="glass-effect" style="padding: 30px; margin-bottom: 20px;">
+                    <h2>Active Tournaments</h2>
+                    <div id="tournaments-list" style="margin-top: 20px;">
+                        <!-- JS populated -->
+                    </div>
+                </div>
+            </section>
+            <!-- VIEW: SETTINGS -->
+            <section id="view-settings" class="view-section hidden">
+                <div class="glass-effect" style="padding: 30px;">
+                    <h2>Settings</h2>
+                    <p style="color: #a0a0a0; margin-top: 10px;">User preferences coming soon.</p>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="static/script.js"></script>
+</body>
+
+</html>

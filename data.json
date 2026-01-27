@@ -1,0 +1,255 @@
+{
+  "host": "Coordinator",
+  "cutoffHour": 17,
+  "players": [
+    {
+      "name": "Ahmed Khan",
+      "status": "in",
+      "joinedAt": "2023-10-27T10:00:00"
+    },
+    {
+      "name": "Sara Ali",
+      "status": "in",
+      "joinedAt": "2023-10-27T10:05:00"
+    },
+    {
+      "name": "Bilal Ahmed",
+      "status": "in",
+      "joinedAt": "2023-10-27T10:10:00"
+    },
+    {
+      "name": "Ayesha Malik",
+      "status": "in",
+      "joinedAt": "2023-10-27T10:15:00"
+    },
+    {
+      "name": "Hamza Raza",
+      "status": "in",
+      "joinedAt": "2023-10-27T10:20:00"
+    },
+    {
+      "name": "Zainab Bibi",
+      "status": "in",
+      "joinedAt": "2023-10-27T10:25:00"
+    },
+    {
+      "name": "Usman Tariq",
+      "status": "in",
+      "joinedAt": "2023-10-27T10:30:00"
+    },
+    {
+      "name": "Hassan Raza",
+      "status": "in",
+      "joinedAt": "2023-10-27T10:35:00"
+    },
+    {
+      "name": "Fatima Noor",
+      "status": "in",
+      "joinedAt": "2023-10-27T10:40:00"
+    },
+    {
+      "name": "Omar Farooq",
+      "status": "in",
+      "joinedAt": "2023-10-27T10:45:00"
+    },
+    {
+      "name": "Sana Mir",
+      "status": "in",
+      "joinedAt": "2023-10-27T10:50:00"
+    },
+    {
+      "name": "Kamran Akmal",
+      "status": "out",
+      "joinedAt": "2023-10-27T10:55:00"
+    },
+    {
+      "name": "Nida Dar",
+      "status": "in",
+      "joinedAt": "2023-10-27T11:00:00"
+    },
+    {
+      "name": "Yasir Shah",
+      "status": "in",
+      "joinedAt": "2023-10-27T11:05:00"
+    },
+    {
+      "name": "Mariam Khan",
+      "status": "out",
+      "joinedAt": "2023-10-27T11:10:00"
+    },
+    {
+      "name": "Fahad Mustafa",
+      "status": "in",
+      "joinedAt": "2023-10-27T11:15:00"
+    },
+    {
+      "name": "Mahira Khan",
+      "status": "in",
+      "joinedAt": "2023-10-27T11:20:00"
+    },
+    {
+      "name": "Babar Azam",
+      "status": "in",
+      "joinedAt": "2023-10-27T11:25:00"
+    },
+    {
+      "name": "Shaheen Afridi",
+      "status": "in",
+      "joinedAt": "2023-10-27T11:30:00"
+    },
+    {
+      "name": "Rizwan Ahmed",
+      "status": "in",
+      "joinedAt": "2023-10-27T11:35:00"
+    },
+    {
+      "name": "Hira Mani",
+      "status": "in",
+      "joinedAt": "2023-10-27T11:40:00"
+    },
+    {
+      "name": "Fawad Khan",
+      "status": "out",
+      "joinedAt": "2023-10-27T11:45:00"
+    },
+    {
+      "name": "Yumna Zaidi",
+      "status": "in",
+      "joinedAt": "2023-10-27T11:50:00"
+    },
+    {
+      "name": "Imran Abbas",
+      "status": "in",
+      "joinedAt": "2023-10-27T11:55:00"
+    },
+    {
+      "name": "Sajal Aly",
+      "status": "out",
+      "joinedAt": "2023-10-27T12:00:00"
+    },
+    {
+      "name": "Haris Rauf",
+      "status": "in",
+      "joinedAt": "2023-10-27T12:05:00"
+    },
+    {
+      "name": "Shadab Khan",
+      "status": "in",
+      "joinedAt": "2023-10-27T12:10:00"
+    },
+    {
+      "name": "Naseem Shah",
+      "status": "in",
+      "joinedAt": "2023-10-27T12:15:00"
+    },
+    {
+      "name": "Kiran Malik",
+      "status": "in",
+      "joinedAt": "2023-10-27T12:20:00"
+    },
+    {
+      "name": "Zoya Nasir",
+      "status": "out",
+      "joinedAt": "2023-10-27T12:25:00"
+    },
+    {
+      "name": "Ali Sethi",
+      "status": "in",
+      "joinedAt": "2023-10-27T12:30:00"
+    },
+    {
+      "name": "Atif Aslam",
+      "status": "in",
+      "joinedAt": "2023-10-27T12:35:00"
+    },
+    {
+      "name": "Momina Mustehsan",
+      "status": "in",
+      "joinedAt": "2023-10-27T12:40:00"
+    },
+    {
+      "name": "Asim Azhar",
+      "status": "in",
+      "joinedAt": "2023-10-27T12:45:00"
+    },
+    {
+      "name": "Hania Aamir",
+      "status": "in",
+      "joinedAt": "2023-10-27T12:50:00"
+    },
+    {
+      "name": "Kubra Khan",
+      "status": "in",
+      "joinedAt": "2023-10-27T12:55:00"
+    },
+    {
+      "name": "Ahsan Khan",
+      "status": "in",
+      "joinedAt": "2023-10-27T13:00:00"
+    },
+    {
+      "name": "Mehwish Hayat",
+      "status": "in",
+      "joinedAt": "2023-10-27T13:05:00"
+    },
+    {
+      "name": "Humayun Saeed",
+      "status": "in",
+      "joinedAt": "2023-10-27T13:10:00"
+    },
+    {
+      "name": "Ayeza Khan",
+      "status": "in",
+      "joinedAt": "2023-10-27T13:15:00"
+    },
+    {
+      "name": "Wali",
+      "status": "in",
+      "joinedAt": "2026-01-27T22:58:21.844026"
+    }
+  ],
+  "teams": [
+    {
+      "name": "Lahore Lions",
+      "members": 12,
+      "wins": 12
+    },
+    {
+      "name": "Karachi Kings",
+      "members": 10,
+      "wins": 10
+    },
+    {
+      "name": "Islamabad United",
+      "members": 8,
+      "wins": 15
+    },
+    {
+      "name": "Peshawar Zalmi",
+      "members": 11,
+      "wins": 8
+    },
+    {
+      "name": "Quetta Gladiators",
+      "members": 9,
+      "wins": 6
+    },
+    {
+      "name": "Multan Sultans",
+      "members": 7,
+      "wins": 14
+    }
+  ],
+  "courtStatus": {
+    "total": 8,
+    "available": 2,
+    "indoor": {
+      "total": 4,
+      "available": 1
+    },
+    "outdoor": {
+      "total": 4,
+      "available": 1
+    }
+  }
+}
