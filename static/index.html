@@ -46,6 +46,9 @@
                 <div class="nav-item" data-view="tournaments">
                     <ion-icon name="trophy-outline"></ion-icon> Tournaments
                 </div>
+                <div class="nav-item" data-view="info">
+                    <ion-icon name="information-circle-outline"></ion-icon> Info / Guide
+                </div>
                 <div class="nav-item" data-view="settings">
                     <ion-icon name="settings-outline"></ion-icon> Settings
                 </div>
@@ -173,7 +176,7 @@
                         </div>
                     </div>
 
-                    <h3 style="margin-top: 30px; margin-bottom: 15px;">Squad Members</h3>
+                    <h3 style="margin-top: 30px; margin-bottom: 15px;">Squad Members (Max 4)</h3>
                     <div id="team-roster-list" class="lists-grid">
                         <!-- Populated by JS -->
                     </div>
@@ -199,6 +202,45 @@
                     </div>
                 </div>
             </section>
+
+            <!-- VIEW: INFO GUIDE -->
+            <section id="view-info" class="view-section hidden">
+                <div class="glass-effect" style="padding: 30px;">
+                    <h2 style="color: var(--primary-neon);">Game Rules & Points System</h2>
+                    <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                        <div>
+                            <h3>🏆 Points Calculation</h3>
+                            <ul style="margin-top: 10px; line-height: 2;">
+                                <li><strong>Win:</strong> +10 Points</li>
+                                <li><strong>Draw:</strong> +5 Points</li>
+                                <li><strong>Participation:</strong> +2 Points</li>
+                                <li><strong>Man of the Match:</strong> +50 Bonus Points</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3>🔥 Difficulty Levels</h3>
+                            <div style="margin-top: 10px;">
+                                <div style="margin-bottom: 10px;"><span class="status-badge"
+                                        style="background: #4caf50; color: white;">Beginner</span> New to Padel.
+                                    Learning rules.</div>
+                                <div style="margin-bottom: 10px;"><span class="status-badge"
+                                        style="background: #8bc34a; color: white;">Easy</span> Can rally consistently.
+                                </div>
+                                <div style="margin-bottom: 10px;"><span class="status-badge"
+                                        style="background: #ffc107; color: black;">Medium</span> Strategic play, good
+                                    serves.</div>
+                                <div style="margin-bottom: 10px;"><span class="status-badge"
+                                        style="background: #ff9800; color: white;">Hard</span> Tournament level play.
+                                </div>
+                                <div style="margin-bottom: 10px;"><span class="status-badge"
+                                        style="background: #f44336; color: white;">Expert</span> Professional / Coach
+                                    level.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- VIEW: SETTINGS -->
             <section id="view-settings" class="view-section hidden">
                 <div class="glass-effect" style="padding: 30px;">
@@ -210,7 +252,7 @@
         </main>
     </div>
 
-    <script src="static/script.js?v=final_fix_2"></script>
+    <script src="static/script.js?v=StatusPlay_2.0"></script>
 </body>
 
 </html>

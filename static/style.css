@@ -215,6 +215,60 @@ body {
     color: #ff4444;
 }
 
+/* Skill Level Badges */
+.badge-skill {
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.skill-beginner {
+    background: #4caf50;
+    color: white;
+}
+
+.skill-easy {
+    background: #8bc34a;
+    color: white;
+}
+
+.skill-medium {
+    background: #ffc107;
+    color: black;
+}
+
+.skill-hard {
+    background: #ff9800;
+    color: white;
+}
+
+.skill-expert {
+    background: #f44336;
+    color: white;
+}
+
+/* Info View Polishing */
+.info-guide h3 {
+    margin-top: 20px;
+    color: var(--accent-blue);
+    border-bottom: 1px solid var(--glass-border);
+    padding-bottom: 5px;
+}
+
+.info-guide ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.info-guide li {
+    padding: 8px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
 /* Buttons & Inputs */
 .btn-primary {
     background: var(--primary-neon);

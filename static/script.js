@@ -1,5 +1,5 @@
 const API_BASE = '/api';
-const REFRESH_RATE = 3000;
+const REFRESH_RATE = 40000; // 40 Seconds
 
 // State
 let currentUser = localStorage.getItem('padel_username') || null;
@@ -86,6 +86,7 @@ function switchView(viewId) {
         'my-team': 'My Squad',
         'courts': 'Court Status',
         'tournaments': 'Tournaments',
+        'info': 'Info / Guide',
         'settings': 'Settings'
     };
     document.getElementById('page-title').innerText = titles[viewId] || 'StatusPlay';
@@ -171,12 +172,19 @@ async function fetchDashboard() {
 async function setStatus(status) {
     const endpoint = status === 'in' ? '/join' : '/leave';
     try {
-        await fetch(`${API_BASE}${endpoint}`, {
+        const res = await fetch(`${API_BASE}${endpoint}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name: currentUser })
         });
-        showToast(status === 'in' ? "You're confirmed! 🎾" : "You Checked Out");
+        const result = await res.json();
+
+        let msg = "You Checked Out";
+        if (status === 'in') {
+            const teamName = result.team || "Squad";
+            msg = `Confirmed in ${teamName}! 🎾`;
+        }
+        showToast(msg);
         fetchDashboard();
     } catch (e) {
         console.error("Action error", e);
@@ -209,8 +217,19 @@ function renderDashboard(data) {
     activePlayers.forEach(p => {
         const div = document.createElement('div');
         div.className = 'list-item';
+        // Default values for robustness
+        const points = p.points || 0;
+        const skill = p.skill_level || 'Beginner';
+        const skillClass = `badge-skill skill-${skill.toLowerCase()}`;
+
         div.innerHTML = `
-            <span>${p.name} ${highlightUser(p.name)}</span>
+            <div style="display: flex; flex-direction: column;">
+                <span>
+                    ${p.name} ${highlightUser(p.name)} 
+                    <span class="${skillClass}" style="margin-left:8px;">${skill}</span>
+                </span>
+                <span style="font-size: 0.8rem; color: #a0a0a0;">${points} Pts</span>
+            </div>
             <span class="status-badge ${p.status === 'in' ? 'badge-in' : 'badge-out'}">${p.status.toUpperCase()}</span>
         `;
         dom.rosterList.appendChild(div);
@@ -350,13 +369,14 @@ function initCharts() {
 
 function updateCharts(data) {
     if (charts.courts) {
+        // Use data.courtStatus directly! It is calculated consistently by the backend now.
         charts.courts.data.datasets[0].data = [
             data.courtStatus.indoor.total,
             data.courtStatus.outdoor.total,
             data.courtStatus.total - data.courtStatus.available,
             data.courtStatus.available
         ];
-        charts.courts.update('none'); // 'none' mode prevents full re-animation flicker
+        charts.courts.update('none');
     }
 
     if (charts.teams) {
@@ -381,5 +401,16 @@ dom.loginBtn.addEventListener('click', login);
 dom.btnIn.addEventListener('click', () => setStatus('in'));
 dom.btnOut.addEventListener('click', () => setStatus('out'));
 dom.usernameInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') login(); });
+
+function getSkillColor(level) {
+    const colors = {
+        'Beginner': '#4caf50',
+        'Easy': '#8bc34a',
+        'Medium': '#ffc107',
+        'Hard': '#ff9800',
+        'Expert': '#f44336'
+    };
+    return colors[level] || '#a0a0a0';
+}
 
 init();
