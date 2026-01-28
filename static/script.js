@@ -114,14 +114,14 @@ function showToast(message) {
 
 // Actions
 function login() {
-    console.log("Login triggered"); // Keep console log
+    console.log("Login triggered");
     const name = dom.usernameInput.value.trim();
     if (name) {
         currentUser = name;
         localStorage.setItem('padel_username', currentUser);
         showDashboard();
     } else {
-        alert("Please enter a name!"); // User feedback for empty input
+        alert("Please enter a name!");
     }
 }
 
@@ -142,7 +142,7 @@ function showDashboard() {
     views.login.classList.add('hidden');
     views.dashboard.classList.remove('hidden');
 
-    if (!charts.courts) initCharts(); // Only init if not exists
+    if (!charts.courts) initCharts();
 
     startPolling();
     fetchDashboard();
@@ -154,14 +154,11 @@ async function fetchDashboard() {
         const res = await fetch(`${API_BASE}/dashboard?user=${currentUser}`);
         const data = await res.json();
 
-        // Simple Deep Equal Check + Force render if explicitly requested (e.g. view switch)
-        // For now, simpler to just render always on view switch but check diff for poll
         if (JSON.stringify(currentData) !== JSON.stringify(data)) {
             currentData = data;
             renderDashboard(data);
             renderViewSpecifics(data);
         } else if (currentView !== 'dashboard') {
-            // Ensure sub-views render even if main data is stable
             renderViewSpecifics(data);
         }
     } catch (e) {
@@ -208,16 +205,13 @@ function renderDashboard(data) {
     dom.discountBanner.innerText = data.stats.discount;
     dom.waitCount.innerText = data.stats.waitingList;
 
-    // Roster - Optimized Rendering (Diffing logic simplified)
+    // Roster 
     const activePlayers = data.players || [];
-
-    // Only rebuild if count changes to avoid simple flicker, 
-    // ideally we modify in place but for now clearing innerHTML is fine IF data actually changed.
     dom.rosterList.innerHTML = '';
     activePlayers.forEach(p => {
         const div = document.createElement('div');
         div.className = 'list-item';
-        // Default values for robustness
+
         const points = p.points || 0;
         const skill = p.skill_level || 'Beginner';
         const skillClass = `badge-skill skill-${skill.toLowerCase()}`;
@@ -261,7 +255,6 @@ function renderViewSpecifics(data) {
             const list = document.getElementById('team-roster-list');
             list.innerHTML = '';
             team.members.forEach(m => {
-                // Reuse stat card style for members
                 const div = document.createElement('div');
                 div.className = 'glass-effect';
                 div.style.padding = '15px';
@@ -274,7 +267,6 @@ function renderViewSpecifics(data) {
         container.innerHTML = '';
         data.stats.detailedCourts.forEach(c => {
             const div = document.createElement('div');
-            // Check usage
             const isFree = c.status === 'Free';
             div.className = 'glass-effect';
             div.style.padding = '20px';
@@ -315,14 +307,88 @@ function renderViewSpecifics(data) {
             `;
             container.appendChild(div);
         });
+    } else if (currentView === 'info') {
+        renderInfoView(data);
+    } else if (currentView === 'settings') {
+        renderSettingsView();
     }
+}
+
+function renderInfoView(data) {
+    const container = document.getElementById('view-info');
+    // Keep header, append table if not exists
+    let tableContainer = document.getElementById('teams-table-container');
+    if (!tableContainer) {
+        tableContainer = document.createElement('div');
+        tableContainer.id = 'teams-table-container';
+        tableContainer.style.marginTop = '30px';
+        container.querySelector('.glass-effect').appendChild(tableContainer);
+    }
+
+    const teams = data.teams || [];
+    let html = `
+        <h3 style="margin-bottom: 15px; border-bottom: 1px solid var(--glass-border); padding-bottom:10px;">Registered Teams</h3>
+        <table style="width: 100%; border-collapse: collapse; color: #eee;">
+            <thead>
+                <tr style="text-align: left; color: var(--text-secondary); font-size: 0.9rem;">
+                    <th style="padding: 10px;">Team Name</th>
+                    <th style="padding: 10px;">Difficulty</th>
+                    <th style="padding: 10px;">Wins</th>
+                    <th style="padding: 10px;">Best Player</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    teams.forEach(t => {
+        const diffColor = getSkillColor(t.difficulty || 'Medium');
+        // Mock best player
+        const bestPlayer = (t.members && t.members[0]) ? t.members[0] : "None";
+        html += `
+            <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <td style="padding: 12px; font-weight: 600;">${t.name}</td>
+                <td style="padding: 12px;"><span class="status-badge" style="background: ${diffColor}; color: #fff; font-size: 0.7rem;">${t.difficulty || 'Medium'}</span></td>
+                <td style="padding: 12px;">${t.wins}</td>
+                <td style="padding: 12px; color: var(--accent-blue);">${bestPlayer} 👑</td>
+            </tr>
+        `;
+    });
+    html += '</tbody></table>';
+    tableContainer.innerHTML = html;
+}
+
+function renderSettingsView() {
+    const container = document.getElementById('view-settings');
+    container.innerHTML = `
+        <div class="glass-effect" style="padding: 30px;">
+            <h2>Settings</h2>
+            <div style="margin-top: 30px; display: grid; gap: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>Email Notifications</span>
+                    <label class="switch"><input type="checkbox" checked><span class="slider round"></span></label>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>Dark Mode</span>
+                    <label class="switch"><input type="checkbox" checked disabled><span class="slider round"></span></label>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>Sound Effects</span>
+                    <label class="switch"><input type="checkbox"><span class="slider round"></span></label>
+                </div>
+                 <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>Show Personal Stats Publicly</span>
+                    <label class="switch"><input type="checkbox" checked><span class="slider round"></span></label>
+                </div>
+            </div>
+            <p style="color: #a0a0a0; margin-top: 30px; font-size: 0.8rem;">StatusPlay v2.1 (Pro)</p>
+        </div>
+    `;
 }
 
 function highlightUser(name) {
     return name.toLowerCase() === currentUser.toLowerCase() ? '(You)' : '';
 }
 
-// Chart.js Logic
 function initCharts() {
     const ctxCourts = document.getElementById('courtsChart').getContext('2d');
     const ctxTeams = document.getElementById('teamsChart').getContext('2d');
@@ -343,7 +409,7 @@ function initCharts() {
         },
         options: {
             responsive: true,
-            maintainAspectRatio: false, // Fits to container height now
+            maintainAspectRatio: false,
             plugins: { legend: { display: false } },
             scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } } }
         }
@@ -369,7 +435,6 @@ function initCharts() {
 
 function updateCharts(data) {
     if (charts.courts) {
-        // Use data.courtStatus directly! It is calculated consistently by the backend now.
         charts.courts.data.datasets[0].data = [
             data.courtStatus.indoor.total,
             data.courtStatus.outdoor.total,
@@ -381,7 +446,7 @@ function updateCharts(data) {
 
     if (charts.teams) {
         charts.teams.data.labels = data.teams.map(t => t.name);
-        charts.teams.data.datasets[0].data = data.teams.map(t => t.members);
+        charts.teams.data.datasets[0].data = data.teams.map(t => t.members.length || 7); // Use member count or mock
         charts.teams.update('none');
     }
 }
@@ -395,9 +460,7 @@ function stopPolling() {
     if (pollInterval) clearInterval(pollInterval);
 }
 
-// Listeners
 dom.loginBtn.addEventListener('click', login);
-// logoutBtn listener is now inside setupSidebar
 dom.btnIn.addEventListener('click', () => setStatus('in'));
 dom.btnOut.addEventListener('click', () => setStatus('out'));
 dom.usernameInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') login(); });
