@@ -136,13 +136,17 @@ function logout() {
 function showLogin() {
     stopPolling();
     views.dashboard.classList.add('hidden');
+    views.dashboard.style.display = 'none';
     views.login.classList.remove('hidden');
+    views.login.style.display = 'flex';
 }
 
 function showDashboard() {
     dom.userDisplayName.innerText = currentUser;
     views.login.classList.add('hidden');
+    views.login.style.display = 'none';
     views.dashboard.classList.remove('hidden');
+    views.dashboard.style.display = 'flex';
 
     if (!charts.courts) initCharts();
 

@@ -7,7 +7,7 @@
     <title>StatusPlay | Pro Dashboard</title>
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="static/style.css?v=3.2">
     <!-- Ionicons for Premium Icons -->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
 </head>
@@ -71,11 +71,11 @@
         <main class="main-content">
 
             <!-- Global Top Bar -->
-            <header class="top-bar glass-effect">
-                <h2 id="page-title" style="font-weight: 600;">Dashboard Preview</h2>
-                <div class="user-profile">
+            <header class="header glass-effect">
+                <h1 id="page-title" style="font-weight: 600;">Dashboard Preview</h1>
+                <div class="user-info">
                     <span id="user-display-name">Player</span>
-                    <div class="avatar">🎾</div>
+                    <div class="user-avatar">🎾</div>
                 </div>
             </header>
 
@@ -357,21 +357,177 @@
                         </tbody>
                     </table>
                 </div>
+            </section>
+
+            <!-- VIEW: SETTINGS -->
+            <section id="view-settings" class="view-section hidden">
+                <div class="glass-effect" style="padding: 30px; max-width: 800px; margin: 0 auto;">
+                    <h2 style="color: var(--primary-neon); margin-bottom: 10px;">Settings</h2>
+                    <p style="color: #a0a0a0; margin-bottom: 30px;">Customize your StatusPlay experience</p>
+
+                    <!-- Notification Settings -->
+                    <div style="margin-bottom: 40px;">
+                        <h3 style="margin-bottom: 20px; font-size: 1.1rem;">🔔 Notifications</h3>
+                        <div style="display: grid; gap: 20px;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 10px;">
+                                <div>
+                                    <strong>Email Notifications</strong>
+                                    <p style="font-size: 0.85rem; color: #a0a0a0; margin-top: 5px;">Receive match
+                                        updates via
+                                        email</p>
+                                </div>
+                                <label class="switch"><input type="checkbox" checked><span
+                                        class="slider round"></span></label>
+                            </div>
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 10px;">
+                                <div>
+                                    <strong>Push Notifications</strong>
+                                    <p style="font-size: 0.85rem; color: #a0a0a0; margin-top: 5px;">Browser push for
+                                        real-time
+                                        updates</p>
+                                </div>
+                                <label class="switch"><input type="checkbox"><span class="slider round"></span></label>
+                            </div>
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 10px;">
+                                <div>
+                                    <strong>Team Chat Alerts</strong>
+                                    <p style="font-size: 0.85rem; color: #a0a0a0; margin-top: 5px;">Notify when team
+                                        members
+                                        message</p>
+                                </div>
+                                <label class="switch"><input type="checkbox" checked><span
+                                        class="slider round"></span></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Display Settings -->
+                    <div style="margin-bottom: 40px;">
+                        <h3 style="margin-bottom: 20px; font-size: 1.1rem;">🎨 Display</h3>
+                        <div style="display: grid; gap: 20px;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 10px;">
+                                <div>
+                                    <strong>Dark Mode</strong>
+                                    <p style="font-size: 0.85rem; color: #a0a0a0; margin-top: 5px;">Currently enabled
+                                        (default)
+                                    </p>
+                                </div>
+                                <label class="switch"><input type="checkbox" checked disabled><span
+                                        class="slider round"></span></label>
+                            </div>
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 10px;">
+                                <div>
+                                    <strong>Animations</strong>
+                                    <p style="font-size: 0.85rem; color: #a0a0a0; margin-top: 5px;">Enable smooth UI
+                                        transitions
+                                    </p>
+                                </div>
+                                <label class="switch"><input type="checkbox" checked><span
+                                        class="slider round"></span></label>
+                            </div>
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 10px;">
+                                <div>
+                                    <strong>Compact View</strong>
+                                    <p style="font-size: 0.85rem; color: #a0a0a0; margin-top: 5px;">Reduce spacing for
+                                        more
+                                        content</p>
+                                </div>
+                                <label class="switch"><input type="checkbox"><span class="slider round"></span></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Privacy Settings -->
+                    <div style="margin-bottom: 40px;">
+                        <h3 style="margin-bottom: 20px; font-size: 1.1rem;">🔒 Privacy</h3>
+                        <div style="display: grid; gap: 20px;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 10px;">
+                                <div>
+                                    <strong>Show Personal Stats Publicly</strong>
+                                    <p style="font-size: 0.85rem; color: #a0a0a0; margin-top: 5px;">Display your points
+                                        and rank
+                                        to others</p>
+                                </div>
+                                <label class="switch"><input type="checkbox" checked><span
+                                        class="slider round"></span></label>
+                            </div>
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 10px;">
+                                <div>
+                                    <strong>Online Status</strong>
+                                    <p style="font-size: 0.85rem; color: #a0a0a0; margin-top: 5px;">Let teammates see
+                                        when
+                                        you're active</p>
+                                </div>
+                                <label class="switch"><input type="checkbox" checked><span
+                                        class="slider round"></span></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Audio Settings -->
+                    <div style="margin-bottom: 40px;">
+                        <h3 style="margin-bottom: 20px; font-size: 1.1rem;">🔊 Audio</h3>
+                        <div style="display: grid; gap: 20px;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 10px;">
+                                <div>
+                                    <strong>Sound Effects</strong>
+                                    <p style="font-size: 0.85rem; color: #a0a0a0; margin-top: 5px;">Play sounds for
+                                        actions and
+                                        notifications</p>
+                                </div>
+                                <label class="switch"><input type="checkbox"><span class="slider round"></span></label>
+                            </div>
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; padding: 15px; background: rgba(0,0,0,0.2); border-radius: 10px;">
+                                <div>
+                                    <strong>Chat Message Sounds</strong>
+                                    <p style="font-size: 0.85rem; color: #a0a0a0; margin-top: 5px;">Audio alert for new
+                                        team
+                                        messages</p>
+                                </div>
+                                <label class="switch"><input type="checkbox"><span class="slider round"></span></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Data Management -->
+                    <div style="margin-bottom: 30px;">
+                        <h3 style="margin-bottom: 20px; font-size: 1.1rem;">💾 Data Management</h3>
+                        <div style="display: grid; gap: 15px;">
+                            <button class="btn-primary"
+                                style="background: rgba(255, 165, 0, 0.1); border: 2px solid #ffa500; color: #ffa500;"
+                                onclick="alert('Chat history cleared!')">
+                                Clear Chat History
+                            </button>
+                            <button class="btn-primary"
+                                style="background: rgba(255, 68, 68, 0.1); border: 2px solid #ff4444; color: #ff4444;"
+                                onclick="if(confirm('Reset all settings to default?')) alert('Settings reset!')">
+                                Reset All Settings
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Version Info -->
+                    <div style="text-align: center; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+                        <p style="color: #a0a0a0; font-size: 0.85rem;">StatusPlay v3.2 (Pro Edition)</p>
+                        <p style="color: #666; font-size: 0.75rem; margin-top: 5px;">Last updated: January 2026</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
     </div>
-    </section>
 
-    <!-- VIEW: SETTINGS -->
-    <section id="view-settings" class="view-section hidden">
-        <div class="glass-effect" style="padding: 30px;">
-            <h2>Settings</h2>
-            <p style="color: #a0a0a0; margin-top: 10px;">User preferences coming soon.</p>
-        </div>
-    </section>
-
-    </main>
-    </div>
-
-    <script src="static/script.js?v=StatusPlay_3.0"></script>
+    <script src="static/script.js?v=StatusPlay_3.2"></script>
 </body>
 
 </html>
