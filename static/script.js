@@ -148,6 +148,9 @@ function showDashboard() {
     views.dashboard.classList.remove('hidden');
     views.dashboard.style.display = 'flex';
 
+    // Force chart recalculation
+    setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
+
     if (!charts.courts) initCharts();
 
     startPolling();
@@ -208,7 +211,18 @@ function renderDashboard(data) {
     // Lists
     dom.motmName.innerText = data.stats.manOfTheMatch.name;
     dom.motmPoints.innerText = `${data.stats.manOfTheMatch.points} Pts`;
-    dom.discountBanner.innerText = data.stats.discount;
+    // Discounts
+    dom.discountBanner.innerHTML = '';
+    (data.stats.discounts || []).forEach(offer => {
+        const div = document.createElement('div');
+        div.style.background = 'linear-gradient(45deg, var(--accent-blue), transparent)';
+        div.style.padding = '15px';
+        div.style.borderRadius = '12px';
+        div.style.fontWeight = '800';
+        div.style.fontSize = '1rem';
+        div.innerText = offer;
+        dom.discountBanner.appendChild(div);
+    });
     dom.waitCount.innerText = data.stats.waitingList;
 
     // Roster 

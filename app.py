@@ -115,7 +115,7 @@ def generate_mock_stats(user_name=None, data=None):
             "points": 1550,
             "avatar": "🥇"
         },
-        "discount": random.choice(marketing_discounts),
+        "discounts": random.sample(marketing_discounts, 2),
         "waitingList": random.randint(2, 8),
         "detailedCourts": detailed_courts,
         "derivedCourtStatus": derived_court_status, 

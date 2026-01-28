@@ -125,11 +125,15 @@
                 <div class="charts-grid" style="margin-top: 25px;">
                     <div class="chart-container glass-effect">
                         <h3 style="margin-bottom: 15px;">Live Court Status</h3>
-                        <canvas id="courtsChart"></canvas>
+                        <div class="chart-wrapper">
+                            <canvas id="courtsChart"></canvas>
+                        </div>
                     </div>
                     <div class="chart-container glass-effect">
                         <h3 style="margin-bottom: 15px;">Squad Participation</h3>
-                        <canvas id="teamsChart"></canvas>
+                        <div class="chart-wrapper">
+                            <canvas id="teamsChart"></canvas>
+                        </div>
                     </div>
                 </div>
 
@@ -147,9 +151,8 @@
 
                     <div class="list-panel glass-effect">
                         <h3 style="margin-bottom: 15px;">Discount Offer 🏷️</h3>
-                        <div id="discount-banner"
-                            style="background: linear-gradient(45deg, var(--accent-blue), transparent); padding: 20px; border-radius: 12px; font-weight: 800; font-size: 1.2rem;">
-                            Loading Offer...
+                        <div id="discount-banner" style="display: flex; flex-direction: column; gap: 10px;">
+                            Loading Offers...
                         </div>
                     </div>
 
