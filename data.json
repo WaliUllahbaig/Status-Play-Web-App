@@ -7,69 +7,99 @@
       "status": "in",
       "joinedAt": "2026-01-27T10:00:00",
       "points": 1450,
-      "skill_level": "Expert"
+      "skill_level": "Expert",
+      "profile": {
+        "email": "ahmed@example.com",
+        "phone": "0300-1234567",
+        "slots": "18:00-20:00"
+      }
     },
     {
       "name": "Sara",
       "status": "in",
       "joinedAt": "2026-01-27T10:05:00",
       "points": 890,
-      "skill_level": "Medium"
+      "skill_level": "Medium",
+      "profile": {
+        "email": "sara@example.com",
+        "phone": "0301-7654321",
+        "slots": "17:00-19:00"
+      }
     },
     {
       "name": "Bilal",
       "status": "out",
       "joinedAt": "2026-01-27T11:00:00",
       "points": 320,
-      "skill_level": "Beginner"
+      "skill_level": "Beginner",
+      "profile": {
+        "email": "bilal@example.com",
+        "phone": "",
+        "slots": "20:00-22:00"
+      }
     },
     {
       "name": "Ayesha",
       "status": "in",
       "joinedAt": "2026-01-27T12:00:00",
       "points": 1100,
-      "skill_level": "Hard"
+      "skill_level": "Hard",
+      "profile": {
+        "email": "ayesha@example.com",
+        "phone": "",
+        "slots": "18:00-21:00"
+      }
     },
     {
       "name": "Zain",
       "status": "in",
       "joinedAt": "2026-01-27T13:00:00",
       "points": 600,
-      "skill_level": "Easy"
+      "skill_level": "Easy",
+      "profile": {
+        "email": "zain@example.com",
+        "phone": "",
+        "slots": "19:00-21:00"
+      }
     },
     {
       "name": "Wali",
       "status": "in",
-      "joinedAt": "2026-01-28T21:43:55.747747",
-      "points": 369,
-      "skill_level": "Expert"
+      "joinedAt": "2026-01-28T21:43:55",
+      "points": 1550,
+      "skill_level": "Expert",
+      "profile": {
+        "email": "wali@example.com",
+        "phone": "0333-1112223",
+        "slots": "18:00-22:00"
+      }
     }
   ],
   "teams": [
     {
-      "name": "Lahore Lions",
-      "wins": 12,
+      "name": "Urban Gladiators",
+      "wins": 24,
       "members": [
         "Ahmed",
-        "Sara",
+        "Wali",
         "Ali",
         "Hassan"
       ],
       "difficulty": "Expert"
     },
     {
-      "name": "Karachi Kings",
-      "wins": 8,
+      "name": "Neon Titans",
+      "wins": 18,
       "members": [
-        "Bilal",
+        "Sara",
         "Zoya",
         "Raza",
         "Momal"
       ],
-      "difficulty": "Medium"
+      "difficulty": "Hard"
     },
     {
-      "name": "Islamabad United",
+      "name": "Swift Falcons",
       "wins": 15,
       "members": [
         "Ayesha",
@@ -77,11 +107,11 @@
         "Fawad",
         "Sana"
       ],
-      "difficulty": "Hard"
+      "difficulty": "Medium"
     },
     {
-      "name": "Peshawar Zalmi",
-      "wins": 10,
+      "name": "Peak Mavericks",
+      "wins": 9,
       "members": [
         "Zain",
         "Omar",
@@ -89,6 +119,17 @@
         "Yasir"
       ],
       "difficulty": "Easy"
+    },
+    {
+      "name": "Storm Breakers",
+      "wins": 21,
+      "members": [
+        "Bilal",
+        "Hamza",
+        "Daud",
+        "Naveed"
+      ],
+      "difficulty": "Expert"
     }
   ],
   "courtStatus": {

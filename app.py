@@ -34,17 +34,23 @@ def generate_mock_stats(user_name=None, data=None):
     """
     Generates dynamic mock data. 
     """
-    weather_conditions = ['Clear Night', 'Breezy', 'Humid', 'Perfect Padel Weather']
-    marketing_discounts = ['20% Off for Students', 'Buy 1 Get 1 Hour Free', 'Weekend Special: Free Gatorade']
+    weather_conditions = ['Clear Night', 'Breezy', 'Humid', 'Perfect Padel Night']
+    marketing_discounts = ['30% Off for Gladiators', 'Night Owl Special: -500 PKR', 'Free Grip for Top Rankers']
     
     # Tournament Mock
     tournaments = [
-        {"name": "Winter Open 2026", "stage": "Quarter Finals", "prize": "50,000 PKR"},
-        {"name": "Corporate League", "stage": "Group Stage", "prize": "100,000 PKR"}
+        {"name": "Gladiators Cup 2026", "stage": "Semi Finals", "prize": "75,000 PKR"},
+        {"name": "Titan League Masters", "stage": "Group Stage", "prize": "120,000 PKR"},
+        {"name": "Elite Padel Championship", "stage": "Quarter Finals", "prize": "95,000 PKR"},
+        {"name": "National Open Series", "stage": "Round of 16", "prize": "150,000 PKR"}
     ]
     
-    # Detailed Courts Mock (Single Source of Truth)
+    # FIXED: Skewed Court Logic to prevent "All Equal Bars"
     detailed_courts = []
+    # Force variation: 5 Booked, 2 Free, 1 Maintenance
+    statuses = ['Booked']*5 + ['Free']*2 + ['Maintenance']*1
+    random.shuffle(statuses)
+    
     indoor_total = 0
     indoor_free = 0
     outdoor_total = 0
@@ -52,8 +58,8 @@ def generate_mock_stats(user_name=None, data=None):
 
     for i in range(1, 9):
         is_indoor = i <= 4
-        status = random.choice(['Free', 'Free', 'Booked', 'Booked', 'Maintenance']) 
-        wait = 0 if status == 'Free' else random.randint(0, 3)
+        status = statuses[i-1]  # Use pre-distributed statuses
+        wait = 0 if status == 'Free' else random.randint(1, 4)
         c_type = "Indoor" if is_indoor else "Outdoor"
         
         detailed_courts.append({
@@ -100,14 +106,14 @@ def generate_mock_stats(user_name=None, data=None):
             "wind": f"{random.randint(5, 15)} km/h"
         },
         "nextMatch": {
-            "teams": "Lahore Lions vs Karachi Kings",
-            "time": "20:00",
-            "court": f"Court {random.randint(1, 4)}"
+            "teams": "Urban Gladiators vs Neon Titans",
+            "time": "21:00",
+            "court": "Court 1"
         },
         "manOfTheMatch": {
-            "name": "Babar Azam",
-            "points": 1500,
-            "avatar": "👑"
+            "name": "Wali",
+            "points": 1550,
+            "avatar": "🥇"
         },
         "discount": random.choice(marketing_discounts),
         "waitingList": random.randint(2, 8),
@@ -143,8 +149,8 @@ def get_dashboard():
     return jsonify({
         "stats": stats,
         "courtStatus": stats['derivedCourtStatus'], 
-        "teams": data.get('teams', []),
-        "players": data.get('players', []),  # FIX: Roster list now included
+        "teams": sorted(data.get('teams', []), key=lambda x: x['wins'], reverse=True),  # SORTED by wins
+        "players": data.get('players', []),
         "activePlayers": active_players,
         "totalPlayers": len(data.get('players', []))
     })
@@ -171,7 +177,8 @@ def join_session():
         "status": "in",
         "joinedAt": datetime.datetime.now().isoformat(),
         "points": random.randint(0, 500),
-        "skill_level": random.choice(SKILL_LEVELS)
+        "skill_level": random.choice(SKILL_LEVELS),
+        "profile": {"email": "", "phone": "", "slots": "18:00-20:00"}
     })
     write_data(data)
     return jsonify({"status": "joined", "team": assigned_team, "data": data})
@@ -188,6 +195,26 @@ def leave_session():
             p['status'] = 'out'
     write_data(data)
     return jsonify({"status": "left"})
+
+@app.route('/api/profile', methods=['GET', 'POST'])
+def handle_profile():
+    name = request.args.get('user') if request.method == 'GET' else request.json.get('name')
+    data = read_data()
+    player = next((p for p in data['players'] if p['name'].lower() == name.lower()), None)
+    
+    if request.method == 'GET':
+        if not player: return jsonify({"error": "User not found"}), 404
+        return jsonify(player.get('profile', {}))
+    
+    # POST - update profile
+    if not player: return jsonify({"error": "User not found"}), 404
+    player['profile'] = {
+        "email": request.json.get('email', player.get('profile', {}).get('email')),
+        "phone": request.json.get('phone', player.get('profile', {}).get('phone')),
+        "slots": request.json.get('slots', player.get('profile', {}).get('slots'))
+    }
+    write_data(data)
+    return jsonify({"success": True, "profile": player['profile']})
 
 @app.route('/api/reset', methods=['POST'])
 def reset_session():

@@ -37,8 +37,14 @@
                 <div class="nav-item active" data-view="dashboard">
                     <ion-icon name="grid-outline"></ion-icon> Dashboard
                 </div>
+                <div class="nav-item" data-view="profile">
+                    <ion-icon name="person-circle-outline"></ion-icon> My Profile
+                </div>
                 <div class="nav-item" data-view="my-team">
                     <ion-icon name="people-outline"></ion-icon> My Team
+                </div>
+                <div class="nav-item" data-view="team-chat">
+                    <ion-icon name="chatbubbles-outline"></ion-icon> Team Chat
                 </div>
                 <div class="nav-item" data-view="courts">
                     <ion-icon name="tennisball-outline"></ion-icon> Courts
@@ -46,8 +52,11 @@
                 <div class="nav-item" data-view="tournaments">
                     <ion-icon name="trophy-outline"></ion-icon> Tournaments
                 </div>
+                <div class="nav-item" data-view="rankings">
+                    <ion-icon name="podium-outline"></ion-icon> Team Rankings
+                </div>
                 <div class="nav-item" data-view="info">
-                    <ion-icon name="information-circle-outline"></ion-icon> Info / Guide
+                    <ion-icon name="information-circle-outline"></ion-icon> Game Info
                 </div>
                 <div class="nav-item" data-view="settings">
                     <ion-icon name="settings-outline"></ion-icon> Settings
@@ -99,28 +108,28 @@
                     </div>
                 </div>
 
-                <!-- Charts Row -->
-                <div class="charts-grid" style="margin-top: 20px;">
-                    <div class="chart-container glass-effect">
-                        <h3>Court Availability</h3>
-                        <canvas id="courtsChart"></canvas>
-                    </div>
-                    <div class="chart-container glass-effect">
-                        <h3>Team Distribution</h3>
-                        <canvas id="teamsChart"></canvas>
+                <!-- Action Area (MOVED ABOVE CHARTS in 3.0) -->
+                <div class="glass-effect" style="padding: 25px; text-align: center; margin-top: 20px;">
+                    <h3 style="margin-bottom: 20px; font-weight: 800;">READY TO PLAY?</h3>
+                    <div style="display: flex; gap: 30px; justify-content: center;">
+                        <button id="btn-in" class="btn-primary"
+                            style="min-width: 150px; background: rgba(57, 255, 20, 0.1); border: 2px solid var(--primary-neon); color: var(--primary-neon); box-shadow: 0 0 20px rgba(57, 255, 20, 0.2);">I'M
+                            IN</button>
+                        <button id="btn-out" class="btn-primary"
+                            style="min-width: 150px; background: rgba(255, 68, 68, 0.1); border: 2px solid #ff4444; color: #ff4444; box-shadow: none;">I'M
+                            OUT</button>
                     </div>
                 </div>
 
-                <!-- Action Area -->
-                <div class="glass-effect" style="padding: 20px; text-align: center; margin-top: 20px;">
-                    <h3 style="margin-bottom: 15px;">Your Status</h3>
-                    <div style="display: flex; gap: 20px; justify-content: center;">
-                        <button id="btn-in" class="btn-primary"
-                            style="background: rgba(57, 255, 20, 0.1); border: 1px solid var(--primary-neon); color: var(--primary-neon);">I'M
-                            IN</button>
-                        <button id="btn-out" class="btn-primary"
-                            style="background: rgba(255, 100, 100, 0.1); border: 1px solid #ff4444; color: #ff4444; box-shadow: none;">I'M
-                            OUT</button>
+                <!-- Charts Row (MOVED BELOW STATUS in 3.0) -->
+                <div class="charts-grid" style="margin-top: 25px;">
+                    <div class="chart-container glass-effect">
+                        <h3 style="margin-bottom: 15px;">Live Court Status</h3>
+                        <canvas id="courtsChart"></canvas>
+                    </div>
+                    <div class="chart-container glass-effect">
+                        <h3 style="margin-bottom: 15px;">Squad Participation</h3>
+                        <canvas id="teamsChart"></canvas>
                     </div>
                 </div>
 
@@ -158,6 +167,36 @@
                 </div>
             </section>
 
+            <!-- VIEW: PROFILE -->
+            <section id="view-profile" class="view-section hidden">
+                <div class="glass-effect" style="padding: 40px; max-width: 800px; margin: 0 auto;">
+                    <div style="display: flex; gap: 30px; align-items: center; margin-bottom: 40px;">
+                        <div class="avatar" style="width: 120px; height: 120px; font-size: 3rem;">👤</div>
+                        <div>
+                            <h2 style="font-size: 2rem; font-weight: 800;" id="profile-name">--</h2>
+                            <p style="color: var(--primary-neon); font-weight: 600;">Status: Verified Player</p>
+                        </div>
+                    </div>
+
+                    <div class="profile-form">
+                        <div class="input-group">
+                            <label>Email Address</label>
+                            <input type="email" id="profile-email" placeholder="example@mail.com">
+                        </div>
+                        <div class="input-group">
+                            <label>Phone Number</label>
+                            <input type="text" id="profile-phone" placeholder="0300-XXXXXXX">
+                        </div>
+                        <div class="input-group">
+                            <label>Preferred Play Slots</label>
+                            <input type="text" id="profile-slots" placeholder="e.g. 18:00 - 22:00">
+                        </div>
+                        <button id="save-profile-btn" class="btn-primary" style="margin-top: 20px; width: auto;">SAVE
+                            CHANGES</button>
+                    </div>
+                </div>
+            </section>
+
             <!-- VIEW: MY TEAM -->
             <section id="view-my-team" class="view-section hidden">
                 <div class="glass-effect" style="padding: 30px;">
@@ -179,6 +218,24 @@
                     <h3 style="margin-top: 30px; margin-bottom: 15px;">Squad Members (Max 4)</h3>
                     <div id="team-roster-list" class="lists-grid">
                         <!-- Populated by JS -->
+                    </div>
+                    <button id="request-team-change-btn" class="btn-primary"
+                        style="margin-top: 30px; background: rgba(255, 165, 0, 0.1); border: 2px solid #ffa500; color: #ffa500;">REQUEST
+                        TEAM CHANGE</button>
+                </div>
+            </section>
+
+            <!-- VIEW: TEAM CHAT -->
+            <section id="view-team-chat" class="view-section hidden">
+                <div class="glass-effect" style="padding: 30px; max-width: 900px; margin: 0 auto;">
+                    <h2 style="margin-bottom: 20px;">Team Chat</h2>
+                    <div id="chat-messages"
+                        style="height: 400px; overflow-y: auto; background: rgba(0,0,0,0.2); border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                        <!-- Messages populated by JS -->
+                    </div>
+                    <div style="display: flex; gap: 15px;">
+                        <input type="text" id="chat-input" placeholder="Type your message..." style="flex: 1;">
+                        <button id="send-chat-btn" class="btn-primary" style="min-width: 120px;">SEND</button>
                     </div>
                 </div>
             </section>
@@ -203,56 +260,118 @@
                 </div>
             </section>
 
-            <!-- VIEW: INFO GUIDE -->
-            <section id="view-info" class="view-section hidden">
+            <!-- VIEW: TEAM RANKINGS -->
+            <section id="view-rankings" class="view-section hidden">
                 <div class="glass-effect" style="padding: 30px;">
-                    <h2 style="color: var(--primary-neon);">Game Rules & Points System</h2>
-                    <div style="margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
-                        <div>
-                            <h3>🏆 Points Calculation</h3>
-                            <ul style="margin-top: 10px; line-height: 2;">
-                                <li><strong>Win:</strong> +10 Points</li>
-                                <li><strong>Draw:</strong> +5 Points</li>
-                                <li><strong>Participation:</strong> +2 Points</li>
-                                <li><strong>Man of the Match:</strong> +50 Bonus Points</li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h3>🔥 Difficulty Levels</h3>
-                            <div style="margin-top: 10px;">
-                                <div style="margin-bottom: 10px;"><span class="status-badge"
-                                        style="background: #4caf50; color: white;">Beginner</span> New to Padel.
-                                    Learning rules.</div>
-                                <div style="margin-bottom: 10px;"><span class="status-badge"
-                                        style="background: #8bc34a; color: white;">Easy</span> Can rally consistently.
-                                </div>
-                                <div style="margin-bottom: 10px;"><span class="status-badge"
-                                        style="background: #ffc107; color: black;">Medium</span> Strategic play, good
-                                    serves.</div>
-                                <div style="margin-bottom: 10px;"><span class="status-badge"
-                                        style="background: #ff9800; color: white;">Hard</span> Tournament level play.
-                                </div>
-                                <div style="margin-bottom: 10px;"><span class="status-badge"
-                                        style="background: #f44336; color: white;">Expert</span> Professional / Coach
-                                    level.</div>
-                            </div>
-                        </div>
+                    <h2 style="color: var(--primary-neon);">Official Team Rankings</h2>
+                    <p style="color: #a0a0a0; margin-bottom: 30px;">Teams are ranked by total match wins this season.
+                    </p>
+                    <div id="teams-table-container">
+                        <!-- JS populated table -->
                     </div>
                 </div>
             </section>
 
-            <!-- VIEW: SETTINGS -->
-            <section id="view-settings" class="view-section hidden">
+            <!-- VIEW: GAME INFO -->
+            <section id="view-info" class="view-section hidden">
                 <div class="glass-effect" style="padding: 30px;">
-                    <h2>Settings</h2>
-                    <p style="color: #a0a0a0; margin-top: 10px;">User preferences coming soon.</p>
-                </div>
-            </section>
+                    <h2 style="color: var(--primary-neon);">Game Rules & Scoring System</h2>
+                    <p style="color: #a0a0a0; margin-bottom: 30px;">Everything you need to know about StatusPlay scoring
+                        and skill levels.</p>
 
-        </main>
+                    <!-- Points Table -->
+                    <h3 style="margin-bottom: 15px;">🏆 Points Calculation</h3>
+                    <table class="pro-table" style="margin-bottom: 40px;">
+                        <thead>
+                            <tr>
+                                <th>Action</th>
+                                <th>Points Awarded</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Win</strong></td>
+                                <td style="color: var(--primary-neon);">+10</td>
+                                <td>Victory in a match</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Draw</strong></td>
+                                <td style="color: var(--accent-blue);">+5</td>
+                                <td>Tied match result</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Participation</strong></td>
+                                <td style="color: #ffd93d;">+2</td>
+                                <td>Showing up to play</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Man of the Match</strong></td>
+                                <td style="color: var(--primary-neon); font-weight: 800;">+50</td>
+                                <td>Outstanding performance bonus</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Difficulty Levels Table -->
+                    <h3 style="margin-bottom: 15px;">🔥 Skill Level Guide</h3>
+                    <table class="pro-table">
+                        <thead>
+                            <tr>
+                                <th>Level</th>
+                                <th>Description</th>
+                                <th>Characteristics</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="status-badge"
+                                        style="background: #4caf50; color: white;">Beginner</span></td>
+                                <td>New to Padel</td>
+                                <td>Learning rules and basic techniques</td>
+                            </tr>
+                            <tr>
+                                <td><span class="status-badge" style="background: #8bc34a; color: white;">Easy</span>
+                                </td>
+                                <td>Casual Player</td>
+                                <td>Can rally consistently</td>
+                            </tr>
+                            <tr>
+                                <td><span class="status-badge" style="background: #ffc107; color: black;">Medium</span>
+                                </td>
+                                <td>Intermediate</td>
+                                <td>Strategic play, good serves</td>
+                            </tr>
+                            <tr>
+                                <td><span class="status-badge" style="background: #ff9800; color: white;">Hard</span>
+                                </td>
+                                <td>Advanced</td>
+                                <td>Tournament level play</td>
+                            </tr>
+                            <tr>
+                                <td><span class="status-badge" style="background: #f44336; color: white;">Expert</span>
+                                </td>
+                                <td>Professional</td>
+                                <td>Coach or competitive pro level</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+    </div>
+    </section>
+
+    <!-- VIEW: SETTINGS -->
+    <section id="view-settings" class="view-section hidden">
+        <div class="glass-effect" style="padding: 30px;">
+            <h2>Settings</h2>
+            <p style="color: #a0a0a0; margin-top: 10px;">User preferences coming soon.</p>
+        </div>
+    </section>
+
+    </main>
     </div>
 
-    <script src="static/script.js?v=StatusPlay_2.1"></script>
+    <script src="static/script.js?v=StatusPlay_3.0"></script>
 </body>
 
 </html>

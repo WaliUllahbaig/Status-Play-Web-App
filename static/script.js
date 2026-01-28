@@ -80,13 +80,15 @@ function switchView(viewId) {
     const targetSection = document.getElementById(`view-${viewId}`);
     if (targetSection) targetSection.classList.remove('hidden');
 
-    // Update Title
     const titles = {
         'dashboard': 'Dashboard Preview',
+        'profile': 'My Pro Profile',
         'my-team': 'My Squad',
+        'team-chat': 'Team Chat',
         'courts': 'Court Status',
         'tournaments': 'Tournaments',
-        'info': 'Info / Guide',
+        'rankings': 'Team Rankings',
+        'info': 'Game Info',
         'settings': 'Settings'
     };
     document.getElementById('page-title').innerText = titles[viewId] || 'StatusPlay';
@@ -105,11 +107,11 @@ function showToast(message) {
     // Animate in
     setTimeout(() => toast.classList.add('show'), 10);
 
-    // Remove after 3s
+    // Remove after 4s (LARGER TOAST in 3.0)
     setTimeout(() => {
         toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 300);
-    }, 3000);
+        setTimeout(() => toast.remove(), 400);
+    }, 4000);
 }
 
 // Actions
@@ -244,7 +246,9 @@ function renderDashboard(data) {
 }
 
 function renderViewSpecifics(data) {
-    if (currentView === 'my-team') {
+    if (currentView === 'profile') {
+        renderProfileView(data);
+    } else if (currentView === 'my-team') {
         const team = data.stats.myTeam;
         if (team) {
             document.getElementById('team-name-big').innerText = team.name;
@@ -261,7 +265,17 @@ function renderViewSpecifics(data) {
                 div.innerHTML = `<strong>${m}</strong>`;
                 list.appendChild(div);
             });
+
+            // Team Change Request Button
+            const changeBtn = document.getElementById('request-team-change-btn');
+            if (changeBtn) {
+                changeBtn.onclick = () => {
+                    showToast("⚠️ Team change request submitted! Coordinator will review.");
+                };
+            }
         }
+    } else if (currentView === 'team-chat') {
+        renderTeamChatView(data);
     } else if (currentView === 'courts') {
         const container = document.getElementById('courts-grid-container');
         container.innerHTML = '';
@@ -307,6 +321,8 @@ function renderViewSpecifics(data) {
             `;
             container.appendChild(div);
         });
+    } else if (currentView === 'rankings') {
+        renderInfoView(data);  // Reuse same table rendering
     } else if (currentView === 'info') {
         renderInfoView(data);
     } else if (currentView === 'settings') {
@@ -355,6 +371,95 @@ function renderInfoView(data) {
     });
     html += '</tbody></table>';
     tableContainer.innerHTML = html;
+}
+
+async function renderProfileView(data) {
+    const me = data.players.find(p => p.name.toLowerCase() === currentUser.toLowerCase());
+    if (!me) return;
+    document.getElementById('profile-name').innerText = me.name;
+    const myTeam = data.stats.myTeam;
+    const teamName = myTeam ? myTeam.name : "No Team";
+    const profileContainer = document.querySelector('#view-profile .glass-effect');
+    let statsSection = document.getElementById('profile-stats-section');
+    if (!statsSection) {
+        statsSection = document.createElement('div');
+        statsSection.id = 'profile-stats-section';
+        statsSection.className = 'stats-grid';
+        statsSection.style.marginBottom = '30px';
+        profileContainer.insertBefore(statsSection, profileContainer.querySelector('.profile-form'));
+    }
+    statsSection.innerHTML = `
+        <div class="stat-card glass-effect" style="background: rgba(57, 255, 20, 0.05);">
+            <span class="stat-label">Total Points</span>
+            <span class="stat-value" style="color: var(--primary-neon);">${me.points || 0}</span>
+        </div>
+        <div class="stat-card glass-effect">
+            <span class="stat-label">Skill Level</span>
+            <span class="stat-value" style="font-size: 1.5rem;">${me.skill_level || 'Beginner'}</span>
+        </div>
+        <div class="stat-card glass-effect">
+            <span class="stat-label">Current Team</span>
+            <span class="stat-value" style="font-size: 1.2rem; color: var(--accent-blue);">${teamName}</span>
+        </div>
+    `;
+    const profile = me.profile || {};
+    document.getElementById('profile-email').value = profile.email || "";
+    document.getElementById('profile-phone').value = profile.phone || "";
+    document.getElementById('profile-slots').value = profile.slots || "";
+    document.getElementById('save-profile-btn').onclick = async () => {
+        const updated = { name: currentUser, email: document.getElementById('profile-email').value, phone: document.getElementById('profile-phone').value, slots: document.getElementById('profile-slots').value };
+        const res = await fetch(`${API_BASE}/profile`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(updated) });
+        if (res.ok) showToast("✅ Profile Updated Successfully!");
+    };
+}
+
+function renderTeamChatView(data) {
+    const myTeam = data.stats.myTeam;
+    if (!myTeam) {
+        document.getElementById('chat-messages').innerHTML = '<p style="color: #a0a0a0; text-align: center; padding: 50px;">You are not assigned to a team yet.</p>';
+        return;
+    }
+    const chatKey = `chat_${myTeam.name}`;
+    const messages = JSON.parse(localStorage.getItem(chatKey) || '[]');
+    const chatContainer = document.getElementById('chat-messages');
+    chatContainer.innerHTML = '';
+    if (messages.length === 0) {
+        // Add dummy messages for first-time users
+        const dummyMessages = [
+            { user: myTeam.members[0] || 'Ahmed', text: 'Hey team! Ready for tonight\'s match?', time: '6:15 PM' },
+            { user: myTeam.members[1] || 'Sara', text: 'Absolutely! I\'ve been practicing my serves 🎾', time: '6:22 PM' },
+            { user: myTeam.members[2] || 'Bilal', text: 'Count me in! What time are we meeting?', time: '6:30 PM' },
+            { user: myTeam.members[0] || 'Ahmed', text: 'Let\'s meet at Court 1 around 8 PM', time: '6:35 PM' }
+        ];
+        messages.push(...dummyMessages);
+        localStorage.setItem(chatKey, JSON.stringify(messages));
+    }
+    if (messages.length === 0) {
+        chatContainer.innerHTML = '<p style="color: #a0a0a0; text-align: center; padding: 50px;">No messages yet. Start the conversation!</p>';
+    } else {
+        messages.forEach(msg => {
+            const div = document.createElement('div');
+            div.style.marginBottom = '15px';
+            div.style.padding = '12px';
+            div.style.background = msg.user === currentUser ? 'rgba(57, 255, 20, 0.1)' : 'rgba(255,255,255,0.05)';
+            div.style.borderRadius = '8px';
+            div.style.borderLeft = msg.user === currentUser ? '3px solid var(--primary-neon)' : '3px solid #555';
+            div.innerHTML = `<div style="display: flex; justify-content: space-between; margin-bottom: 5px;"><strong style="color: ${msg.user === currentUser ? 'var(--primary-neon)' : 'var(--accent-blue)'};">${msg.user}</strong><span style="font-size: 0.75rem; color: #888;">${msg.time}</span></div><div>${msg.text}</div>`;
+            chatContainer.appendChild(div);
+        });
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+    document.getElementById('send-chat-btn').onclick = () => {
+        const input = document.getElementById('chat-input');
+        const text = input.value.trim();
+        if (!text) return;
+        const newMsg = { user: currentUser, text: text, time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) };
+        messages.push(newMsg);
+        localStorage.setItem(chatKey, JSON.stringify(messages));
+        input.value = '';
+        renderTeamChatView(data);
+    };
+    document.getElementById('chat-input').onkeypress = (e) => { if (e.key === 'Enter') document.getElementById('send-chat-btn').click(); };
 }
 
 function renderSettingsView() {
@@ -446,7 +551,7 @@ function updateCharts(data) {
 
     if (charts.teams) {
         charts.teams.data.labels = data.teams.map(t => t.name);
-        charts.teams.data.datasets[0].data = data.teams.map(t => t.members.length || 7); // Use member count or mock
+        charts.teams.data.datasets[0].data = data.teams.map(t => t.wins); // WIN-BASED PROPORTIONS
         charts.teams.update('none');
     }
 }
